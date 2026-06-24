@@ -1,17 +1,9 @@
 import streamlit as st
 import pickle
 import numpy as np
-import pyodbc
+import pandas as pd
 
 # Login Credentials
-conn = pyodbc.connect(
-    r'DRIVER={SQL Server};'
-    r'SERVER=DESKTOP-KTBMED7\SQLEXPRESS01;'
-    r'DATABASE=Loan_db;'
-    r'Trusted_Connection=yes;'
-)
-
-
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
@@ -25,19 +17,15 @@ if not st.session_state.logged_in:
 
     if st.button("Login"):
 
-        query = f"""
-        SELECT *
-        FROM app_users
-        WHERE username='{username}'
-        AND password='{password}'
-        """
+        users = pd.read_csv("user.csv")
 
-        cursor = conn.cursor()
-        cursor.execute(query)
+        user = users[
+            (users["username"] == username) &
+            (users["password"] == password)
+        ]
 
-        user = cursor.fetchone()
-
-        if user:
+        if not user.empty\
+                :
             st.session_state.logged_in = True
             st.success("Login Successful")
             st.rerun()
