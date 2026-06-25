@@ -17,7 +17,7 @@ if not st.session_state.logged_in:
 
     if st.button("Login"):
 
-        users = pd.read_csv("user.csv")
+        users = pd.read_csv("users.csv")
 
         user = users[
             (users["username"] == username) &
